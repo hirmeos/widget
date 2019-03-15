@@ -35,5 +35,13 @@
   "main": "index.js",
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hirmeos/widget.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hirmeos/widget/issues"
+  },
+  "homepage": "https://github.com/hirmeos/widget#readme"
 }

@@ -1,7 +1,3 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './hirmeos-metrics.css';
-
 function getMetrics() {
   return {
     'tweets': 10,
