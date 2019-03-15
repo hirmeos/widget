@@ -1,0 +1,60 @@
+.hirmeos-widget {
+  border: solid;
+  padding: 15px;
+}
+
+li.arrowed {
+  list-style-type: disclosure-closed;
+  padding: 5px;
+}
+
+div.width-50-perc {
+  width: 50%;
+}
+
+.flex-display {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+div.inner-content {
+  padding: 10px 0 0 30px;
+}
+
+.btn {
+  display: block;
+  height: 60px;
+  width: 60px;
+  border-radius: 30%;
+  border: 2px solid black;
+  background-color: white;
+  padding: 0px;
+  float: right;
+  text-align: center;
+  min-width: 20px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  white-space: nowrap;
+  color: black;
+  margin: auto;
+}
+
+.width-100 {
+  width: 80%;
+}
+
+div.inlne-block-100 {
+  display: inline-block;
+  width: 100%;
+}
+
+div.metrics-dashbord-link {
+  margin-top: 10px;
+}
