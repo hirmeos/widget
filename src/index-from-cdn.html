@@ -10,7 +10,7 @@
     <title>Metrics App</title>
 
     <!-- load css for this app-->
-    <link type='text/css' href="./hirmeos-metrics.css" rel="stylesheet">
+    <link type='text/css' href="https://storage.googleapis.com/hirmeos/metrics-widget/hirmeos-metrics.css" rel="stylesheet">
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -20,7 +20,7 @@
 
     </div>
 
-  
+
     <!-- Load React -->
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
@@ -29,12 +29,12 @@
     <!-- load js for this app-->
     <script>
       let widget_params = {
-        "baseUrl": "http://0.0.0.0:8080/metrics/",
+        // "baseUrl": "http://0.0.0.0:8080/metrics/",
         "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImcwN2gzMjEyQGdtYWlsLmNvbSJ9.ZUjknVXs52LGoudGH4YYFO6yAs7ukIMtJxclplfGIZ8",
         "uri": "info:doi:10.5334/bbc",
         "widgetTitle": "Book Metrics",
       };
     </script>
-    <script src="../processed/hirmeos-metrics.min.js"></script>
+    <script src="https://storage.googleapis.com/hirmeos/metrics-widget/hirmeos-metrics.min.js"></script>
   </body>
 </html>

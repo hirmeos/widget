@@ -9,14 +9,15 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 function getMetrics() {
-  return {
-    'tweets': 10,
-    'hypothesis': 15,
-    'downloads': 250,
-    'views': 900,
-    'wikipedia': 0,
-    'googlebooks': 0
-  };
+
+  var arr = glob_data;
+  var ret_dict = {};
+
+  arr.forEach(function (event) {
+    ret_dict[event.measure] ? ret_dict[event.measure] += event.value : ret_dict[event.measure] = event.value;
+  });
+
+  return ret_dict;
 }
 
 var ListItems = function (_React$Component) {
@@ -34,37 +35,37 @@ var ListItems = function (_React$Component) {
   }
 
   _createClass(ListItems, [{
-    key: 'handleClick',
+    key: "handleClick",
     value: function handleClick() {
       this.setState({ showMetrics: !this.state.showMetrics });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
       return React.createElement(
-        'div',
-        { className: 'inlne-block-100' },
+        "div",
+        { className: "inlne-block-100" },
         React.createElement(
-          'button',
-          { className: 'btn', onClick: function onClick() {
+          "button",
+          { className: "btn", onClick: function onClick() {
               return _this2.handleClick();
             } },
           this.props.totalMetrics
         ),
         React.createElement(
-          'div',
-          { className: 'width-100' },
-          'Metrics'
+          "div",
+          { className: "width-80" },
+          typeof widgetTitle === 'undefined' ? "Metrics" : widgetTitle
         ),
         React.createElement(
-          'div',
-          { className: 'metrics-dashbord-link' },
+          "div",
+          { className: "metrics-dashbord-link" },
           React.createElement(
-            'a',
-            { href: '#DetailedMetricsDashboard' },
-            'View detailed metrics'
+            "a",
+            { href: "#DetailedMetricsDashboard" },
+            "View detailed metrics"
           )
         ),
         this.state.showMetrics ? this.props.innerContent : null
@@ -85,7 +86,7 @@ var App = function (_React$Component2) {
   }
 
   _createClass(App, [{
-    key: 'render',
+    key: "render",
     value: function render() {
       var metrics = getMetrics(); // Will be replaced by AJAX call once the Metrics-API is ready
       var metricsArray = [];
@@ -124,35 +125,53 @@ var App = function (_React$Component2) {
       var metricsCount = metricsArray.length;
       var moves = metricsArray.map(function (values, index) {
         return React.createElement(
-          'li',
-          { className: 'arrowed', key: index },
+          "tr",
+          { key: index, className: "table-row-body" },
           React.createElement(
-            'div',
-            { className: 'flex-display' },
-            React.createElement(
-              'div',
-              { className: 'flex-1' },
-              values[0]
-            ),
-            React.createElement(
-              'div',
-              { className: 'width-50-perc' },
-              values[1]
-            )
+            "td",
+            null,
+            values[0]
+          ),
+          React.createElement(
+            "td",
+            { className: "textAlignCenter" },
+            values[1]
           )
         );
       });
       var innerMoves = React.createElement(
-        'div',
-        { className: 'inner-content' },
-        moves
+        "table",
+        { className: "table table-bordered width-100" },
+        React.createElement(
+          "thead",
+          null,
+          React.createElement(
+            "tr",
+            { className: "table-row-head" },
+            React.createElement(
+              "th",
+              null,
+              "Measure"
+            ),
+            React.createElement(
+              "th",
+              { className: "textAlignCenter" },
+              "Value"
+            )
+          )
+        ),
+        React.createElement(
+          "tbody",
+          null,
+          moves
+        )
       );
 
       return React.createElement(
-        'div',
-        { className: 'hirmeos-widget' },
+        "div",
+        { className: "hirmeos-widget" },
         React.createElement(
-          'div',
+          "div",
           null,
           React.createElement(ListItems, {
             innerContent: innerMoves,
@@ -166,5 +185,28 @@ var App = function (_React$Component2) {
   return App;
 }(React.Component);
 
-var domContainer = document.querySelector('#metrics-block');
-ReactDOM.render(React.createElement(App, null), domContainer);
+var url = new URL(typeof widget_params.baseUrl === 'undefined' ? "https://metrics.ubiquity.press/metrics/" : widget_params.baseUrl);
+
+url.searchParams.append('uri', widget_params.uri);
+
+var glob_data = [];
+
+var widgetTitle = widget_params.widgetTitle;
+var params = {
+  headers: {
+    "Authorization": "Bearer " + widget_params.token
+  },
+  method: "GET"
+};
+
+fetch(url, params).then(function (data) {
+  return data.json();
+}).then(function (res) {
+  glob_data = res.data;
+}).then(function () {
+  var domContainer = document.querySelector('#metrics-block');
+  ReactDOM.render(React.createElement(App, null), domContainer);
+}).finally(function () {
+  params = null;
+  widget_params.token = null;
+});

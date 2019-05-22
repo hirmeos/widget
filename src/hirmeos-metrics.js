@@ -1,12 +1,15 @@
 function getMetrics() {
-  return {
-    'tweets': 10,
-    'hypothesis': 15,
-    'downloads': 250,
-    'views': 900,
-    'wikipedia': 0,
-    'googlebooks': 0,
-  }
+
+  let arr = glob_data;
+  let ret_dict = {};
+
+  arr.forEach(function(event){
+    (ret_dict[event.measure]) ?
+      ret_dict[event.measure] += event.value :
+      ret_dict[event.measure] = event.value;
+  });
+
+  return ret_dict
 }
 
 class ListItems extends React.Component {
@@ -24,16 +27,21 @@ class ListItems extends React.Component {
   render() {
     return (
       <div className="inlne-block-100">
-        <button className="btn" onClick={() => this.handleClick()}>
+        <button className="metrics-widget-btn" onClick={() => this.handleClick()}>
           { this.props.totalMetrics }
         </button>
-        <div className="width-100">Metrics</div>
+        <div className="width-80">
+          { typeof widgetTitle === 'undefined' ? "Metrics": widgetTitle}
+        </div>
         <div className="metrics-dashbord-link">
           <a href="#DetailedMetricsDashboard">
             View detailed metrics
           </a>
         </div>
+
+
         { this.state.showMetrics ? this.props.innerContent : null }
+
       </div>
     );
   }
@@ -42,7 +50,7 @@ class ListItems extends React.Component {
 class App extends React.Component {
 
   render() {
-    const metrics = getMetrics(); // Will be replaced by AJAX call once the Metrics-API is ready
+    const metrics = getMetrics();
     const metricsArray = [];
     for (const [key, value] of Object.entries(metrics)) {
       if (value !== 0) {
@@ -50,27 +58,33 @@ class App extends React.Component {
       }
     }
     const metricsCount = metricsArray.length;
-    const moves = metricsArray.map((values, index) => {
+    const metricsContent = metricsArray.map((values, index) => {
       return (
-        <li className="arrowed" key={index}>
-          <div className="flex-display">
-            <div className="flex-1">
-              {values[0]}
-            </div>
-            <div className="width-50-perc">
-              {values[1]}
-            </div>
-          </div>
-        </li>
+        <tr key={index} className="table-row-body">
+          <td>{values[0]}</td>
+          <td className="textAlignCenter">{values[1]}</td>
+        </tr>
       );
     });
-    const innerMoves = <div className="inner-content">{moves}</div>
+    const metricsTable = (
+      <table className="table table-bordered width-100">
+        <thead>
+          <tr className="table-row-head">
+            <th>Measure</th>
+            <th className="textAlignCenter">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          {metricsContent}
+        </tbody>
+      </table>
+    );
 
     return (
       <div className="hirmeos-widget">
         <div>
           <ListItems
-            innerContent={innerMoves}
+            innerContent={metricsTable}
             totalMetrics={metricsCount}
           />
         </div>
@@ -79,5 +93,31 @@ class App extends React.Component {
   }
 }
 
-const domContainer = document.querySelector('#metrics-block');
-ReactDOM.render(<App/>, domContainer);
+let url = new URL(
+  typeof widget_params.baseUrl === 'undefined' ?
+    "https://metrics.ubiquity.press/metrics/": widget_params.baseUrl
+);
+
+url.searchParams.append('uri', widget_params.uri);
+
+let glob_data = [];
+
+let widgetTitle = widget_params.widgetTitle;
+let params = {
+  headers: {
+    "Authorization": "Bearer " + widget_params.token,
+  },
+  method: "GET",
+};
+
+fetch(url, params)
+.then(data => {
+  return data.json()
+})
+.then(res => {
+  glob_data = res.data
+})
+.then(function () {
+  const domContainer = document.querySelector('#metrics-block');
+  ReactDOM.render(React.createElement(App, null), domContainer);
+});

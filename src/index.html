@@ -11,12 +11,50 @@
 
     <!-- load css for this app-->
     <link type='text/css' href="./hirmeos-metrics.css" rel="stylesheet">
+
+    <!--load bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
     <!-- this div will need to be included in existing page -->
-    <div id="metrics-block" style="width: 35%">
+    <div id="no-react-metrics-block" style="width: 35%; margin: 10px">
+      <div class="hirmeos-widget-copy">
+        <div class="metrics-pre-expand">
+          <div class="metrics-count-container">
+            <button class="metrics-widget-btn-copy">
+              3
+            </button>
+            <p style="margin: 5px 0 0 0">
+              Measures
+            </p>
+          </div>
+          <div class="metrics-details-container">
+            <h3 class="metrics-title">
+              Metrics
+            </h3>
+            <button type="button" class="btn btn-link">
+              3 measures are available
+            </button>
+          </div>
+        </div>
+        <div class="post-expand">
+          <table class="table table-insert"><thead><tr class="table-row-head"><th>Measure</th><th class="textAlignCenter">Value</th></tr></thead><tbody><tr class="table-row-body"><td>tag:operas.eu,2018:annotations:hirmeos-altmetrics</td><td class="textAlignCenter">3</td></tr><tr class="table-row-body"><td>tag:operas.eu,2018:wordpressdotcom-references:hirmeos-altmetrics</td><td class="textAlignCenter">1</td></tr><tr class="table-row-body"><td>tag:operas.eu,2018:tweets:hirmeos-altmetrics</td><td class="textAlignCenter">18</td></tr></tbody></table>
+        </div>
+        <div class="metrics-dashbord-link">
+            <a class="btn btn-dark metrics-dashbord-link" href="#DetailedMetricsDashboard">
+              View detailed metrics dashboard
+            </a>
+          </div>
+      </div>
+    </div>
+
+
+    <br><hr><br>
+
+    <div id="metrics-block" style="width: 600px">
 
     </div>
 
@@ -28,5 +66,14 @@
 
     <!-- load js for this app-->
     <script type="text/jsx" src="./hirmeos-metrics.js"></script>
+    <script>
+      let widget_params = {
+        "baseUrl": "http://0.0.0.0:8080/metrics/",
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImcwN2gzMjEyQGdtYWlsLmNvbSJ9.ZUjknVXs52LGoudGH4YYFO6yAs7ukIMtJxclplfGIZ8",
+        "uri": "info:doi:10.5334/bbc",
+        "widgetTitle": "Book Metrics",
+      };
+    </script>
+
   </body>
 </html>
