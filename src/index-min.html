@@ -10,23 +10,25 @@
     <title>Metrics App</title>
 
     <!-- load css for this app-->
-    <link type='text/css' href="./hirmeos-metrics.css" rel="stylesheet">
+    <link rel="stylesheet" href="./hirmeos-metrics.css">
+
+    <!--load bootstrap-->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
 
     <!-- this div will need to be included in existing page -->
-    <div id="metrics-block" style="width: 35%">
+    <div id="metrics-block" style="width: 35%; margin: 10px;"></div>
 
-    </div>
 
-  
     <!-- Load React -->
     <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
-    <!-- load js for this app-->
+    <!-- Customise Widget parameters -->
     <script>
       let widget_params = {
         "baseUrl": "http://0.0.0.0:8080/metrics/",
@@ -35,6 +37,8 @@
         "widgetTitle": "Book Metrics",
       };
     </script>
+
+    <!-- load js for this app-->
     <script src="../processed/hirmeos-metrics.min.js"></script>
   </body>
 </html>

@@ -1,57 +1,20 @@
 .hirmeos-widget {
-  border: solid;
-  padding: 15px;
-}
-
-.hirmeos-widget-copy {
   border: 1px solid gray;
   padding: 1px;
+  margin: 0 !important;
+  min-width: 500px;
 }
 
-li.arrowed {
-  list-style-type: disclosure-closed;
-  padding: 5px;
-}
-
-div.width-50-perc {
-  width: 50%;
-  text-align: center;
-}
-
-.flex-display {
-  display: flex;
-}
-
-.flex-1 {
-  flex: 1;
+.hirmeos-widget button {
+  float: unset;
 }
 
 div.inner-content {
-  padding: 10px 0 0 30px;
+  padding: 10px 0 0 30px !important;
+  margin:0 !important;
 }
 
 .metrics-widget-btn {
-  display: block;
-  height: 60px;
-  width: 60px;
-  border-radius: 30%;
-  border: 2px solid black;
-  background-color: white;
-  padding: 0px;
-  float: right;
-  text-align: center;
-  min-width: 20px;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  user-select: none;
-  vertical-align: middle;
-  white-space: nowrap;
-  color: black;
-  margin: auto;
-}
-
-.metrics-widget-btn-copy {
   display: block;
   height: 60px;
   width: 60px;
@@ -74,30 +37,27 @@ div.inner-content {
 .metrics-pre-expand {
   overflow: auto;
   display: flex;
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .metrics-count-container {
   float:left;
-  padding: 10px 20px 10px 20px;
+  padding: 10px 20px 10px 20px !important;
+  margin: 0 !important;
 }
 
 .metrics-title {
-  margin: 10px 0 0 0;
+  margin: 10px 0 0 0 !important;
+  padding: 0 !important;
 }
 
 .metrics-details-container {
   float: left;
-  padding-top: 15px;
+  padding: 15px 0 0 0 !important;
+  margin: 0 !important;
   flex-grow: 100;
   text-align: center;
-}
-
-.width-80 {
-  width: 80%;
-}
-
-.width-100 {
-  width: 100%;
 }
 
 .table-row-head {
@@ -114,23 +74,18 @@ div.inner-content {
   margin-bottom: 1px !important;
 }
 
-th, td {
-  border-bottom: 1px solid #ddd;
-}
-
 .textAlignCenter {
   text-align: center;
-}
-
-div.inlne-block-100 {
-  display: inline-block;
-  width: 100%;
 }
 
 a.metrics-dashbord-link {
   text-align: center;
   width: 100%;
+  margin: 0 !important;
+  padding: 6px 12px !important;
 }
 
-div.post-expand {
+p.button-measure-text {
+  margin: 5px 0 0 0 !important;
+  padding: 0 !important;
 }

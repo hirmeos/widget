@@ -12,7 +12,7 @@ function getMetrics() {
   return ret_dict
 }
 
-class ListItems extends React.Component {
+class WidgetMain extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -26,22 +26,34 @@ class ListItems extends React.Component {
 
   render() {
     return (
-      <div className="inlne-block-100">
-        <button className="metrics-widget-btn" onClick={() => this.handleClick()}>
-          { this.props.totalMetrics }
-        </button>
-        <div className="width-80">
-          { typeof widgetTitle === 'undefined' ? "Metrics": widgetTitle}
+      <div className="hirmeos-widget">
+        <div className="metrics-pre-expand">
+          <div className="metrics-count-container">
+            <button className="metrics-widget-btn" onClick={() => this.handleClick()}>
+              { this.props.totalMetrics }
+            </button>
+            <p className="button-measure-text">
+              Measures
+            </p>
+          </div>
+          <div className="metrics-details-container">
+            <h3 className="metrics-title">
+              { typeof widgetTitle === 'undefined' ? "Metrics": widgetTitle}
+            </h3>
+            <button className="btn btn-link" onClick={() => this.handleClick()}>
+              { this.props.totalMetrics } measures are available
+            </button>
+          </div>
         </div>
-        <div className="metrics-dashbord-link">
-          <a href="#DetailedMetricsDashboard">
-            View detailed metrics
-          </a>
-        </div>
-
 
         { this.state.showMetrics ? this.props.innerContent : null }
 
+        <div className="metrics-dashbord-link">
+          <a className="btn btn-dark metrics-dashbord-link"
+             href="#DetailedMetricsDashboard">
+            View detailed metrics dashboard
+          </a>
+        </div>
       </div>
     );
   }
@@ -67,23 +79,25 @@ class App extends React.Component {
       );
     });
     const metricsTable = (
-      <table className="table table-bordered width-100">
-        <thead>
+      <div className="post-expand">
+        <table className="table table-insert">
+          <thead>
           <tr className="table-row-head">
             <th>Measure</th>
             <th className="textAlignCenter">Value</th>
           </tr>
-        </thead>
-        <tbody>
-          {metricsContent}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {metricsContent}
+          </tbody>
+        </table>
+      </div>
     );
 
     return (
       <div className="hirmeos-widget">
         <div>
-          <ListItems
+          <WidgetMain
             innerContent={metricsTable}
             totalMetrics={metricsCount}
           />

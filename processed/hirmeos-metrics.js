@@ -20,13 +20,13 @@ function getMetrics() {
   return ret_dict;
 }
 
-var ListItems = function (_React$Component) {
-  _inherits(ListItems, _React$Component);
+var WidgetMain = function (_React$Component) {
+  _inherits(WidgetMain, _React$Component);
 
-  function ListItems(props) {
-    _classCallCheck(this, ListItems);
+  function WidgetMain(props) {
+    _classCallCheck(this, WidgetMain);
 
-    var _this = _possibleConstructorReturn(this, (ListItems.__proto__ || Object.getPrototypeOf(ListItems)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (WidgetMain.__proto__ || Object.getPrototypeOf(WidgetMain)).call(this, props));
 
     _this.state = {
       showMetrics: false
@@ -34,7 +34,7 @@ var ListItems = function (_React$Component) {
     return _this;
   }
 
-  _createClass(ListItems, [{
+  _createClass(WidgetMain, [{
     key: "handleClick",
     value: function handleClick() {
       this.setState({ showMetrics: !this.state.showMetrics });
@@ -46,34 +46,60 @@ var ListItems = function (_React$Component) {
 
       return React.createElement(
         "div",
-        { className: "inlne-block-100" },
-        React.createElement(
-          "button",
-          { className: "btn", onClick: function onClick() {
-              return _this2.handleClick();
-            } },
-          this.props.totalMetrics
-        ),
+        { className: "hirmeos-widget" },
         React.createElement(
           "div",
-          { className: "width-80" },
-          typeof widgetTitle === 'undefined' ? "Metrics" : widgetTitle
+          { className: "metrics-pre-expand" },
+          React.createElement(
+            "div",
+            { className: "metrics-count-container" },
+            React.createElement(
+              "button",
+              { className: "metrics-widget-btn", onClick: function onClick() {
+                  return _this2.handleClick();
+                } },
+              this.props.totalMetrics
+            ),
+            React.createElement(
+              "p",
+              { className: "button-measure-text" },
+              "Measures"
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "metrics-details-container" },
+            React.createElement(
+              "h3",
+              { className: "metrics-title" },
+              typeof widgetTitle === 'undefined' ? "Metrics" : widgetTitle
+            ),
+            React.createElement(
+              "button",
+              { className: "btn btn-link", onClick: function onClick() {
+                  return _this2.handleClick();
+                } },
+              this.props.totalMetrics,
+              " measures are available"
+            )
+          )
         ),
+        this.state.showMetrics ? this.props.innerContent : null,
         React.createElement(
           "div",
           { className: "metrics-dashbord-link" },
           React.createElement(
             "a",
-            { href: "#DetailedMetricsDashboard" },
-            "View detailed metrics"
+            { className: "btn btn-dark metrics-dashbord-link",
+              href: "#DetailedMetricsDashboard" },
+            "View detailed metrics dashboard"
           )
-        ),
-        this.state.showMetrics ? this.props.innerContent : null
+        )
       );
     }
   }]);
 
-  return ListItems;
+  return WidgetMain;
 }(React.Component);
 
 var App = function (_React$Component2) {
@@ -88,7 +114,7 @@ var App = function (_React$Component2) {
   _createClass(App, [{
     key: "render",
     value: function render() {
-      var metrics = getMetrics(); // Will be replaced by AJAX call once the Metrics-API is ready
+      var metrics = getMetrics();
       var metricsArray = [];
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -123,7 +149,7 @@ var App = function (_React$Component2) {
       }
 
       var metricsCount = metricsArray.length;
-      var moves = metricsArray.map(function (values, index) {
+      var metricsContent = metricsArray.map(function (values, index) {
         return React.createElement(
           "tr",
           { key: index, className: "table-row-body" },
@@ -139,31 +165,35 @@ var App = function (_React$Component2) {
           )
         );
       });
-      var innerMoves = React.createElement(
-        "table",
-        { className: "table table-bordered width-100" },
+      var metricsTable = React.createElement(
+        "div",
+        { className: "post-expand" },
         React.createElement(
-          "thead",
-          null,
+          "table",
+          { className: "table table-insert" },
           React.createElement(
-            "tr",
-            { className: "table-row-head" },
+            "thead",
+            null,
             React.createElement(
-              "th",
-              null,
-              "Measure"
-            ),
-            React.createElement(
-              "th",
-              { className: "textAlignCenter" },
-              "Value"
+              "tr",
+              { className: "table-row-head" },
+              React.createElement(
+                "th",
+                null,
+                "Measure"
+              ),
+              React.createElement(
+                "th",
+                { className: "textAlignCenter" },
+                "Value"
+              )
             )
+          ),
+          React.createElement(
+            "tbody",
+            null,
+            metricsContent
           )
-        ),
-        React.createElement(
-          "tbody",
-          null,
-          moves
         )
       );
 
@@ -173,8 +203,8 @@ var App = function (_React$Component2) {
         React.createElement(
           "div",
           null,
-          React.createElement(ListItems, {
-            innerContent: innerMoves,
+          React.createElement(WidgetMain, {
+            innerContent: metricsTable,
             totalMetrics: metricsCount
           })
         )
@@ -206,7 +236,4 @@ fetch(url, params).then(function (data) {
 }).then(function () {
   var domContainer = document.querySelector('#metrics-block');
   ReactDOM.render(React.createElement(App, null), domContainer);
-}).finally(function () {
-  params = null;
-  widget_params.token = null;
 });
