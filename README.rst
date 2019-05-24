@@ -21,6 +21,10 @@ these, simply open file *(3)* in a browser, e.g.
 
     $ firefox src/index.html
 
+Note: the ``baseUrl`` variable has been set to use a local version of the \
+metrics-api. Comment this out to query the live API.
+
+
 Moving to production
 --------------------
 
@@ -71,6 +75,22 @@ when loading this script.
 
 It is useful to view this file in your browser to make sure the
 production steps mentioned above were successful.
+
+  .. code-block:: bash
+
+    $ firefox src/index-min.html
+
+
+The *src/index-from-cdn.html* file
+----------------------------------
+
+This shows a production-ready implementation of the widget. Both the JavaScript
+and CSS are imported from our CDN, and the React imports are set to the
+production versions of these scripts.
+
+Note: the ``baseUrl`` variable has been disabled so the widget will query the
+live instance of the metrics-api. Please be sure to update your token
+accordingly.
 
   .. code-block:: bash
 
