@@ -81,8 +81,8 @@ production steps mentioned above were successful.
     $ firefox src/index-min.html
 
 
-The *src/index-from-cdn.html* file
-----------------------------------
+Production-ready implementation
+-------------------------------
 
 This shows a production-ready implementation of the widget. Both the JavaScript
 and CSS are imported from our CDN, and the React imports are set to the
@@ -94,4 +94,22 @@ accordingly.
 
   .. code-block:: bash
 
-    $ firefox src/index-min.html
+    $ firefox src/index-from-cdn.html
+
+
+
+Widget customisation
+--------------------
+
+The widget can be customised by setting values in the ``widget_params``
+variable. Currently these include:
+
+    - ``token``: The JWT used to authenticate yourself on the metrics-api
+      (same token use for the altmetrics service).
+
+    - ``uri``: The URI of the book / Chapter you want to display metrics for.
+
+    - ``WidgetTitle``: The title that appears on the widget (defaults to
+      'Metrics').
+
+Both ``token`` and ``uri`` need to be set in order for the widget to work.
