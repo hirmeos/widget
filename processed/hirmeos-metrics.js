@@ -20,18 +20,46 @@ function getMetrics() {
   return ret_dict;
 }
 
-var WidgetMain = function (_React$Component) {
-  _inherits(WidgetMain, _React$Component);
+var ExternalLink = function (_React$Component) {
+  _inherits(ExternalLink, _React$Component);
+
+  function ExternalLink(props) {
+    _classCallCheck(this, ExternalLink);
+
+    return _possibleConstructorReturn(this, (ExternalLink.__proto__ || Object.getPrototypeOf(ExternalLink)).call(this, props));
+  }
+
+  _createClass(ExternalLink, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        { className: "metrics-dashbord-link" },
+        React.createElement(
+          "a",
+          { className: "btn btn-dark metrics-dashbord-link",
+            href: this.props.detailedMetricsLink },
+          "View detailed metrics dashboard"
+        )
+      );
+    }
+  }]);
+
+  return ExternalLink;
+}(React.Component);
+
+var WidgetMain = function (_React$Component2) {
+  _inherits(WidgetMain, _React$Component2);
 
   function WidgetMain(props) {
     _classCallCheck(this, WidgetMain);
 
-    var _this = _possibleConstructorReturn(this, (WidgetMain.__proto__ || Object.getPrototypeOf(WidgetMain)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (WidgetMain.__proto__ || Object.getPrototypeOf(WidgetMain)).call(this, props));
 
-    _this.state = {
+    _this2.state = {
       showMetrics: false
     };
-    return _this;
+    return _this2;
   }
 
   _createClass(WidgetMain, [{
@@ -42,7 +70,7 @@ var WidgetMain = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      var _this2 = this;
+      var _this3 = this;
 
       return React.createElement(
         "div",
@@ -56,7 +84,7 @@ var WidgetMain = function (_React$Component) {
             React.createElement(
               "button",
               { className: "metrics-widget-btn", onClick: function onClick() {
-                  return _this2.handleClick();
+                  return _this3.handleClick();
                 } },
               this.props.totalMetrics
             ),
@@ -77,7 +105,7 @@ var WidgetMain = function (_React$Component) {
             React.createElement(
               "button",
               { className: "btn btn-link", onClick: function onClick() {
-                  return _this2.handleClick();
+                  return _this3.handleClick();
                 } },
               this.props.totalMetrics,
               " measures are available"
@@ -85,16 +113,10 @@ var WidgetMain = function (_React$Component) {
           )
         ),
         this.state.showMetrics ? this.props.innerContent : null,
-        React.createElement(
-          "div",
-          { className: "metrics-dashbord-link" },
-          React.createElement(
-            "a",
-            { className: "btn btn-dark metrics-dashbord-link",
-              href: "#DetailedMetricsDashboard" },
-            "View detailed metrics dashboard"
-          )
-        )
+        this.props.showLink ? React.createElement(ExternalLink, {
+          detailedMetricsLink: detailedMetricsLink,
+          detailedMetricsText: detailedMetricsText
+        }) : null
       );
     }
   }]);
@@ -102,8 +124,8 @@ var WidgetMain = function (_React$Component) {
   return WidgetMain;
 }(React.Component);
 
-var App = function (_React$Component2) {
-  _inherits(App, _React$Component2);
+var App = function (_React$Component3) {
+  _inherits(App, _React$Component3);
 
   function App() {
     _classCallCheck(this, App);
@@ -205,7 +227,8 @@ var App = function (_React$Component2) {
           null,
           React.createElement(WidgetMain, {
             innerContent: metricsTable,
-            totalMetrics: metricsCount
+            totalMetrics: metricsCount,
+            showLink: showDetailedMetricsLink
           })
         )
       );
@@ -215,9 +238,17 @@ var App = function (_React$Component2) {
   return App;
 }(React.Component);
 
-var url = new URL(typeof widget_params.baseUrl === 'undefined' ? "https://metrics.ubiquity.press/metrics/" : widget_params.baseUrl);
+function setDefault(variable, default_value) {
+  // check if variable is defined, otherwise return default value
+  return typeof variable === 'undefined' ? default_value : variable;
+}
 
+var url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press/metrics/"));
 url.searchParams.append('uri', widget_params.uri);
+
+var showDetailedMetricsLink = setDefault(widget_params.showDetailedMetricsLink, false);
+var detailedMetricsLink = setDefault(widget_params.detailedMetricsLink, '#NotImplemented');
+var detailedMetricsText = setDefault(widget_params.detailedMetricsText, 'View detailed metrics dashboard');
 
 var glob_data = [];
 

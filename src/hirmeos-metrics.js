@@ -12,6 +12,24 @@ function getMetrics() {
   return ret_dict
 }
 
+class ExternalLink extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="metrics-dashbord-link">
+        <a className="btn btn-dark metrics-dashbord-link"
+            href={this.props.detailedMetricsLink}>
+          View detailed metrics dashboard
+        </a>
+      </div>
+    );
+  }
+}
+
+
 class WidgetMain extends React.Component {
   constructor(props) {
     super(props);
@@ -48,12 +66,14 @@ class WidgetMain extends React.Component {
 
         { this.state.showMetrics ? this.props.innerContent : null }
 
-        <div className="metrics-dashbord-link">
-          <a className="btn btn-dark metrics-dashbord-link"
-             href="#DetailedMetricsDashboard">
-            View detailed metrics dashboard
-          </a>
-        </div>
+        { this.props.showLink ?
+            <ExternalLink
+              detailedMetricsLink={detailedMetricsLink}
+              detailedMetricsText={detailedMetricsText}
+            /> :
+          null
+        }
+
       </div>
     );
   }
@@ -100,6 +120,7 @@ class App extends React.Component {
           <WidgetMain
             innerContent={metricsTable}
             totalMetrics={metricsCount}
+            showLink={showDetailedMetricsLink}
           />
         </div>
       </div>
@@ -107,12 +128,33 @@ class App extends React.Component {
   }
 }
 
-let url = new URL(
-  typeof widget_params.baseUrl === 'undefined' ?
-    "https://metrics.ubiquity.press/metrics/": widget_params.baseUrl
-);
 
+function setDefault(variable, default_value) {
+  // check if variable is defined, otherwise return default value
+  return typeof variable === 'undefined' ?
+    default_value: variable
+}
+
+let url = new URL(
+  setDefault(
+    widget_params.baseUrl,
+    "https://metrics.ubiquity.press/metrics/"
+  )
+);
 url.searchParams.append('uri', widget_params.uri);
+
+let showDetailedMetricsLink = setDefault(
+  widget_params.showDetailedMetricsLink,
+  false
+);
+let detailedMetricsLink = setDefault(
+  widget_params.detailedMetricsLink,
+  '#NotImplemented'
+);
+let detailedMetricsText = setDefault(
+  widget_params.detailedMetricsText,
+  'View detailed metrics dashboard'
+);
 
 let glob_data = [];
 
