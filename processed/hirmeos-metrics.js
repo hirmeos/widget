@@ -14,7 +14,7 @@ function getMetrics() {
   var ret_dict = {};
 
   arr.forEach(function (event) {
-    ret_dict[event.measure] ? ret_dict[event.measure] += event.value : ret_dict[event.measure] = event.value;
+    ret_dict[event.measure_uri] ? ret_dict[event.measure_uri] += event.value : ret_dict[event.measure_uri] = event.value;
   });
 
   return ret_dict;
@@ -243,8 +243,9 @@ function setDefault(variable, default_value) {
   return typeof variable === 'undefined' ? default_value : variable;
 }
 
-var url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press/metrics/"));
-url.searchParams.append('uri', widget_params.uri);
+var url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press/events"));
+
+url.searchParams.append('filter', "work_uri:" + widget_params.uri);
 
 var showDetailedMetricsLink = setDefault(widget_params.showDetailedMetricsLink, false);
 var detailedMetricsLink = setDefault(widget_params.detailedMetricsLink, '#NotImplemented');
@@ -254,9 +255,6 @@ var glob_data = [];
 
 var widgetTitle = widget_params.widgetTitle;
 var params = {
-  headers: {
-    "Authorization": "Bearer " + widget_params.token
-  },
   method: "GET"
 };
 
