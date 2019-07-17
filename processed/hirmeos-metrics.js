@@ -8,6 +8,153 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var supportedLocales = ["en", "fr", "de", "it", "es", "pt", "el"];
+
+var widgetLocale = {
+  "widgetTitle": {
+    "en": "Metrics",
+    "fr": "Statistiques",
+    "de": "Statistiken",
+    "it": "Statistiche",
+    "es": "",
+    "pt": "",
+    "el": "Στατιστικά"
+  },
+  "detailsLink": {
+    "en": "measures available",
+    "fr": "indicateurs disponibles",
+    "de": "Metriken vorhanden",
+    "it": "misure disponibili",
+    "es": "",
+    "pt": "",
+    "el": "Τύποι στατιστικών διαθέσιμοι"
+  },
+  "dataType": {
+    "en": "Measures",
+    "fr": "Indicateurs",
+    "de": "Metriken",
+    "it": "Misure",
+    "es": "",
+    "pt": "",
+    "el": "Τύποι στατιστικών"
+  },
+  "tableHeaderNumber": {
+    "en": "Value",
+    "fr": "Nombre",
+    "de": "Wert",
+    "it": "Quantità",
+    "es": "",
+    "pt": "",
+    "el": "Τιμή"
+  },
+  "tableHeaderType": {
+    "en": "Type",
+    "fr": "Type",
+    "de": "Typ",
+    "it": "Tipo",
+    "es": "",
+    "pt": "",
+    "el": "Τύπος"
+  },
+  "tableHeaderSource": {
+    "en": "Source",
+    "fr": "Source",
+    "de": "Quelle",
+    "it": "Provenienza",
+    "es": "",
+    "pt": "",
+    "el": "Πηγή"
+  },
+  "viewDetails": {
+    "en": "Show details",
+    "fr": "Voir détails",
+    "de": "Details anzeigen",
+    "it": "Vedi",
+    "es": "",
+    "pt": "",
+    "el": "Προβολή λεπτομερειών"
+  },
+  "hideDetails": {
+    "en": "Hide details",
+    "fr": "Masquer détails",
+    "de": "Details ausblenden",
+    "it": "Nascondi",
+    "es": "",
+    "pt": "",
+    "el": "Απόκρυψη λεπτομερειών"
+  },
+  "hoverLinkMeasureDefinition": {
+    "en": "Click to see definition",
+    "fr": "Cliquez pour voir la définition",
+    "de": "Klicken Sie hier, um die Definition zu sehen",
+    "it": "Clicca per vedere la definizione",
+    "es": "",
+    "pt": "",
+    "el": "Κάντε κλικ για να δείτε τον ορισμό"
+  }
+};
+
+function setDefault(variable, default_value) {
+  // check if variable is defined, otherwise return default value
+  return typeof variable === "undefined" ? default_value : variable;
+}
+
+function setLocale(languageCode) {
+  // will use the first part of the language code to assign locale
+  var localeCode = setDefault(languageCode.split("_")[0], "en");
+  if (!supportedLocales.includes(localeCode)) {
+    console.log("Cannot recognise language code " + localeCode);
+    localeCode = "en";
+  }
+
+  return localeCode;
+}
+
+function getLocale(detail) {
+  // ensure global "localeLanguage" variable is set before running this
+  var value = widgetLocale[detail][localeLanguage];
+  if (typeof value === "undefined" || value.length === 0) {
+    console.log("No locale value for " + detail + " " + localeLanguage);
+  }
+  return value;
+}
+
+function setMeasuresDict(dataArr) {
+
+  var measureDict = {};
+
+  dataArr.forEach(function (measure) {
+    measureDict[measure.measure_uri] = {
+      "source": measure.source,
+      "type": measure.type
+    };
+  });
+
+  return measureDict;
+}
+
+function getMeasureInfo() {
+  return fetch(measureUrl).then(function (data) {
+    return data.json();
+  }).then(function (res) {
+    return res.data;
+  }).then(function (measure_mappings) {
+    measure_data = setMeasuresDict(measure_mappings);
+  });
+}
+
+function fetchMetricsData(url, params) {
+  return fetch(url, params).then(function (data) {
+    return data.json();
+  }).then(function (res) {
+    glob_data = res.data;
+  });
+}
+
+function fetchAPIData(url, params) {
+  return Promise.all([getMeasureInfo(), fetchMetricsData(url, params)]);
+}
+
 function getMetrics() {
 
   var arr = glob_data;
@@ -91,7 +238,7 @@ var WidgetMain = function (_React$Component2) {
             React.createElement(
               "p",
               { className: "button-measure-text" },
-              "Measures"
+              getLocale("detailsLink")
             )
           ),
           React.createElement(
@@ -100,15 +247,14 @@ var WidgetMain = function (_React$Component2) {
             React.createElement(
               "h3",
               { className: "metrics-title" },
-              typeof widgetTitle === 'undefined' ? "Metrics" : widgetTitle
+              typeof widgetTitle === "undefined" ? getLocale("widgetTitle") : widgetTitle
             ),
             React.createElement(
               "button",
               { className: "btn btn-link", onClick: function onClick() {
                   return _this3.handleClick();
                 } },
-              this.props.totalMetrics,
-              " measures are available"
+              this.state.showMetrics ? getLocale("hideDetails") : getLocale("viewDetails")
             )
           )
         ),
@@ -124,8 +270,54 @@ var WidgetMain = function (_React$Component2) {
   return WidgetMain;
 }(React.Component);
 
-var App = function (_React$Component3) {
-  _inherits(App, _React$Component3);
+var WidgetTableRow = function (_React$Component3) {
+  _inherits(WidgetTableRow, _React$Component3);
+
+  function WidgetTableRow(props) {
+    _classCallCheck(this, WidgetTableRow);
+
+    return _possibleConstructorReturn(this, (WidgetTableRow.__proto__ || Object.getPrototypeOf(WidgetTableRow)).call(this, props));
+  }
+
+  _createClass(WidgetTableRow, [{
+    key: "handleClick",
+    value: function handleClick() {
+      window.open(this.props.values[0], "_blank");
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this5 = this;
+
+      return React.createElement(
+        "tr",
+        { className: "table-row-body", onClick: function onClick() {
+            return _this5.handleClick();
+          }, title: getLocale("hoverLinkMeasureDefinition") },
+        React.createElement(
+          "td",
+          null,
+          measure_data[this.props.values[0]].source
+        ),
+        React.createElement(
+          "td",
+          null,
+          measure_data[this.props.values[0]].type
+        ),
+        React.createElement(
+          "td",
+          { className: "textAlignCenter" },
+          this.props.values[1]
+        )
+      );
+    }
+  }]);
+
+  return WidgetTableRow;
+}(React.Component);
+
+var App = function (_React$Component4) {
+  _inherits(App, _React$Component4);
 
   function App() {
     _classCallCheck(this, App);
@@ -137,6 +329,12 @@ var App = function (_React$Component3) {
     key: "render",
     value: function render() {
       var metrics = getMetrics();
+
+      if (Object.entries(metrics).length === 0 && metrics.constructor === Object) {
+        console.log("No metrics available for this entry.");
+        return React.createElement("span", { hidden: true });
+      }
+
       var metricsArray = [];
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
@@ -172,20 +370,10 @@ var App = function (_React$Component3) {
 
       var metricsCount = metricsArray.length;
       var metricsContent = metricsArray.map(function (values, index) {
-        return React.createElement(
-          "tr",
-          { key: index, className: "table-row-body" },
-          React.createElement(
-            "td",
-            null,
-            values[0]
-          ),
-          React.createElement(
-            "td",
-            { className: "textAlignCenter" },
-            values[1]
-          )
-        );
+        return React.createElement(WidgetTableRow, {
+          key: index,
+          values: values
+        });
       });
       var metricsTable = React.createElement(
         "div",
@@ -202,12 +390,17 @@ var App = function (_React$Component3) {
               React.createElement(
                 "th",
                 null,
-                "Measure"
+                getLocale("tableHeaderSource")
+              ),
+              React.createElement(
+                "th",
+                null,
+                getLocale("tableHeaderType")
               ),
               React.createElement(
                 "th",
                 { className: "textAlignCenter" },
-                "Value"
+                getLocale("tableHeaderNumber")
               )
             )
           ),
@@ -238,18 +431,21 @@ var App = function (_React$Component3) {
   return App;
 }(React.Component);
 
-function setDefault(variable, default_value) {
-  // check if variable is defined, otherwise return default value
-  return typeof variable === 'undefined' ? default_value : variable;
-}
+var base_url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press"));
 
-var url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press/events"));
+var url = new URL(base_url + "events");
+var measureUrl = new URL(base_url + "measures");
+var measure_data = void 0;
 
-url.searchParams.append('filter', "work_uri:" + widget_params.uri);
+url.searchParams.append("filter", "work_uri:" + widget_params.uri);
 
 var showDetailedMetricsLink = setDefault(widget_params.showDetailedMetricsLink, false);
-var detailedMetricsLink = setDefault(widget_params.detailedMetricsLink, '#NotImplemented');
-var detailedMetricsText = setDefault(widget_params.detailedMetricsText, 'View detailed metrics dashboard');
+var detailedMetricsLink = setDefault(widget_params.detailedMetricsLink, "#NotImplemented");
+var detailedMetricsText = setDefault(widget_params.detailedMetricsText, "View detailed metrics dashboard");
+
+// Set language code for translations
+var localeSetting = setDefault(widget_params.locale, "en");
+var localeLanguage = setLocale(localeSetting);
 
 var glob_data = [];
 
@@ -258,11 +454,7 @@ var params = {
   method: "GET"
 };
 
-fetch(url, params).then(function (data) {
-  return data.json();
-}).then(function (res) {
-  glob_data = res.data;
-}).then(function () {
-  var domContainer = document.querySelector('#metrics-block');
+fetchAPIData(url, params).then(function () {
+  var domContainer = document.querySelector("#metrics-block");
   ReactDOM.render(React.createElement(App, null), domContainer);
 });

@@ -1,3 +1,165 @@
+const supportedLocales = ["en", "fr", "de", "it", "es", "pt", "el"];
+
+const widgetLocale = {
+  "widgetTitle":{
+    "en": "Metrics",
+    "fr": "Statistiques",
+    "de": "Statistiken",
+    "it": "Statistiche",
+    "es": "",
+    "pt": "",
+    "el": "Στατιστικά"
+  },
+  "detailsLink": {
+    "en": "measures available",
+    "fr": "indicateurs disponibles",
+    "de": "Metriken vorhanden",
+    "it": "misure disponibili",
+    "es": "",
+    "pt": "",
+    "el": "Τύποι στατιστικών διαθέσιμοι"
+  },
+  "dataType": {
+    "en": "Measures",
+    "fr": "Indicateurs",
+    "de": "Metriken",
+    "it": "Misure",
+    "es": "",
+    "pt": "",
+    "el": "Τύποι στατιστικών"
+  },
+  "tableHeaderNumber": {
+    "en": "Value",
+    "fr": "Nombre",
+    "de": "Wert",
+    "it": "Quantità",
+    "es": "",
+    "pt": "",
+    "el": "Τιμή"
+  },
+  "tableHeaderType": {
+    "en": "Type",
+    "fr": "Type",
+    "de": "Typ",
+    "it": "Tipo",
+    "es": "",
+    "pt": "",
+    "el": "Τύπος"
+  },
+  "tableHeaderSource": {
+    "en": "Source",
+    "fr": "Source",
+    "de": "Quelle",
+    "it": "Provenienza",
+    "es": "",
+    "pt": "",
+    "el": "Πηγή"
+  },
+  "viewDetails": {
+    "en": "Show details",
+    "fr": "Voir détails",
+    "de": "Details anzeigen",
+    "it": "Vedi",
+    "es": "",
+    "pt": "",
+    "el": "Προβολή λεπτομερειών"
+  },
+  "hideDetails": {
+    "en": "Hide details",
+    "fr": "Masquer détails",
+    "de": "Details ausblenden",
+    "it": "Nascondi",
+    "es": "",
+    "pt": "",
+    "el": "Απόκρυψη λεπτομερειών"
+  },
+  "hoverLinkMeasureDefinition": {
+    "en": "Click to see definition",
+    "fr": "Cliquez pour voir la définition",
+    "de": "Klicken Sie hier, um die Definition zu sehen",
+    "it": "Clicca per vedere la definizione",
+    "es": "",
+    "pt": "",
+    "el": "Κάντε κλικ για να δείτε τον ορισμό"
+  }
+};
+
+
+function setDefault(variable, default_value) {
+  // check if variable is defined, otherwise return default value
+  return typeof variable === "undefined" ?
+    default_value: variable
+}
+
+
+function setLocale(languageCode) {
+  // will use the first part of the language code to assign locale
+  let localeCode = setDefault(
+    languageCode.split("_")[0],
+    "en"
+  );
+  if (!supportedLocales.includes(localeCode)) {
+    console.log(`Cannot recognise language code ${localeCode}`);
+    localeCode = "en";
+  }
+
+  return localeCode
+}
+
+
+function getLocale(detail) {
+  // ensure global "localeLanguage" variable is set before running this
+  let value = widgetLocale[detail][localeLanguage];
+  if (typeof value === "undefined" || value.length === 0) {
+    console.log(`No locale value for ${detail} ${localeLanguage}`);
+  }
+  return value
+}
+
+
+function setMeasuresDict(dataArr) {
+
+  let measureDict = {};
+
+  dataArr.forEach(function(measure){
+    measureDict[measure.measure_uri] = {
+      "source": measure.source,
+      "type": measure.type,
+    };
+  });
+
+  return measureDict
+}
+
+
+function getMeasureInfo() {
+  return fetch(measureUrl)
+    .then(data => {
+      return data.json()
+    })
+    .then(res => {
+      return res.data;
+    })
+    .then(function (measure_mappings) {
+        measure_data = setMeasuresDict(measure_mappings);
+    })
+}
+
+
+function fetchMetricsData(url, params) {
+  return fetch(url, params)
+    .then(data => {
+      return data.json()
+    })
+    .then(res => {
+      glob_data = res.data
+    })
+}
+
+function fetchAPIData(url, params) {
+  return Promise.all([getMeasureInfo(), fetchMetricsData(url, params)])
+}
+
 function getMetrics() {
 
   let arr = glob_data;
@@ -51,15 +213,15 @@ class WidgetMain extends React.Component {
               { this.props.totalMetrics }
             </button>
             <p className="button-measure-text">
-              Measures
+              { getLocale("detailsLink") }
             </p>
           </div>
           <div className="metrics-details-container">
             <h3 className="metrics-title">
-              { typeof widgetTitle === 'undefined' ? "Metrics": widgetTitle}
+              { typeof widgetTitle === "undefined" ? getLocale("widgetTitle"): widgetTitle}
             </h3>
             <button className="btn btn-link" onClick={() => this.handleClick()}>
-              { this.props.totalMetrics } measures are available
+              { this.state.showMetrics ? getLocale("hideDetails") : getLocale("viewDetails") }
             </button>
           </div>
         </div>
@@ -79,10 +241,38 @@ class WidgetMain extends React.Component {
   }
 }
 
+
+class WidgetTableRow extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  handleClick() {
+    window.open(this.props.values[0], "_blank");
+  }
+
+  render() {
+    return (
+        <tr className="table-row-body" onClick={() => this.handleClick()} title={ getLocale("hoverLinkMeasureDefinition") }>
+          <td>{measure_data[this.props.values[0]].source}</td>
+          <td>{measure_data[this.props.values[0]].type}</td>
+          <td className="textAlignCenter">{this.props.values[1]}</td>
+        </tr>
+    )
+  }
+}
+
+
 class App extends React.Component {
 
   render() {
     const metrics = getMetrics();
+
+    if (Object.entries(metrics).length === 0 && metrics.constructor === Object) {
+      console.log("No metrics available for this entry.");
+      return <span hidden={true}></span>
+    }
+
     const metricsArray = [];
     for (const [key, value] of Object.entries(metrics)) {
       if (value !== 0) {
@@ -92,10 +282,10 @@ class App extends React.Component {
     const metricsCount = metricsArray.length;
     const metricsContent = metricsArray.map((values, index) => {
       return (
-        <tr key={index} className="table-row-body">
-          <td>{values[0]}</td>
-          <td className="textAlignCenter">{values[1]}</td>
-        </tr>
+        <WidgetTableRow
+          key={index}
+          values={values}
+        />
       );
     });
     const metricsTable = (
@@ -103,8 +293,15 @@ class App extends React.Component {
         <table className="table table-insert">
           <thead>
           <tr className="table-row-head">
-            <th>Measure</th>
-            <th className="textAlignCenter">Value</th>
+            <th>
+              { getLocale("tableHeaderSource") }
+            </th>
+            <th>
+              { getLocale("tableHeaderType") }
+            </th>
+            <th className="textAlignCenter">
+              { getLocale("tableHeaderNumber") }
+            </th>
           </tr>
           </thead>
           <tbody>
@@ -129,20 +326,18 @@ class App extends React.Component {
 }
 
 
-function setDefault(variable, default_value) {
-  // check if variable is defined, otherwise return default value
-  return typeof variable === 'undefined' ?
-    default_value: variable
-}
-
-let url = new URL(
+let base_url = new URL(
   setDefault(
     widget_params.baseUrl,
-    "https://metrics.ubiquity.press/events"
+    "https://metrics.ubiquity.press"
   )
 );
 
-url.searchParams.append('filter', "work_uri:" + widget_params.uri);
+let url = new URL(base_url + "events");
+let measureUrl = new URL(base_url + "measures");
+let measure_data;
+
+url.searchParams.append("filter", "work_uri:" + widget_params.uri);
 
 let showDetailedMetricsLink = setDefault(
   widget_params.showDetailedMetricsLink,
@@ -150,12 +345,20 @@ let showDetailedMetricsLink = setDefault(
 );
 let detailedMetricsLink = setDefault(
   widget_params.detailedMetricsLink,
-  '#NotImplemented'
+  "#NotImplemented"
 );
 let detailedMetricsText = setDefault(
   widget_params.detailedMetricsText,
-  'View detailed metrics dashboard'
+  "View detailed metrics dashboard"
 );
+
+// Set language code for translations
+let localeSetting = setDefault(
+  widget_params.locale,
+  "en"
+);
+let localeLanguage = setLocale(localeSetting);
+
 
 let glob_data = [];
 
@@ -164,14 +367,8 @@ let params = {
   method: "GET",
 };
 
-fetch(url, params)
-.then(data => {
-  return data.json()
-})
-.then(res => {
-  glob_data = res.data
-})
-.then(function () {
-  const domContainer = document.querySelector('#metrics-block');
-  ReactDOM.render(React.createElement(App, null), domContainer);
-});
+fetchAPIData(url, params)
+  .then(function () {
+    const domContainer = document.querySelector("#metrics-block");
+    ReactDOM.render(React.createElement(App, null), domContainer);
+  });

@@ -101,15 +101,28 @@ accordingly.
 Widget customisation
 --------------------
 
-The widget can be customised by setting values in the ``widget_params``
-variable. Currently these include:
+The widget can be customised by setting values in the widget_params variable.
+Currently these include:
 
-    - ``token``: The JWT used to authenticate yourself on the metrics-api
-      (same token use for the altmetrics service).
+    - ``uri``: Required - The URI of the book / Chapter you want to display
+      metrics for.
 
-    - ``uri``: The URI of the book / Chapter you want to display metrics for.
+    - ``locale``: Language code for locale that the widget should be displayed
+      in (default is 'en').
 
-    - ``WidgetTitle``: The title that appears on the widget (defaults to
-      'Metrics').
+    - ``baseUrl``: Base URL for querying metrics. Can be set if you have a local
+      instance of the metrics API (defaults to "https://metrics.ubiquity.press").
 
-Both ``token`` and ``uri`` need to be set in order for the widget to work.
+    - ``WidgetTitle``: The title that appears on the widget
+      (default is 'Metrics').
+
+    - ``showDetailedMetricsLink``: ``true`` or ``false``, whether or not to
+      display link to detailed metrics (if available; defaults to ``false``).
+
+    - ``detailedMetricsLink``: URL link to detailed metrics (no default).
+
+    - ``detailedMetricsText``: Text to show for displaying the link to detailed
+      metrics (default is 'Show detailed metrics').
+
+
+Only ``uri`` needs to be set in order for the widget to work.
