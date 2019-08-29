@@ -6,8 +6,8 @@ const widgetLocale = {
     "fr": "Statistiques",
     "de": "Statistiken",
     "it": "Statistiche",
-    "es": "",
-    "pt": "",
+    "es": "Estadística",
+    "pt": "Estatístico",
     "el": "Στατιστικά"
   },
   "detailsLink": {
@@ -15,8 +15,8 @@ const widgetLocale = {
     "fr": "indicateurs disponibles",
     "de": "Metriken vorhanden",
     "it": "misure disponibili",
-    "es": "",
-    "pt": "",
+    "es": "medidas disponibles",
+    "pt": "indicadores disponíveis",
     "el": "Τύποι στατιστικών διαθέσιμοι"
   },
   "dataType": {
@@ -24,8 +24,8 @@ const widgetLocale = {
     "fr": "Indicateurs",
     "de": "Metriken",
     "it": "Misure",
-    "es": "",
-    "pt": "",
+    "es": "Medidas",
+    "pt": "Indicadores",
     "el": "Τύποι στατιστικών"
   },
   "tableHeaderNumber": {
@@ -33,8 +33,8 @@ const widgetLocale = {
     "fr": "Nombre",
     "de": "Wert",
     "it": "Quantità",
-    "es": "",
-    "pt": "",
+    "es": "Valor",
+    "pt": "Número",
     "el": "Τιμή"
   },
   "tableHeaderType": {
@@ -42,8 +42,8 @@ const widgetLocale = {
     "fr": "Type",
     "de": "Typ",
     "it": "Tipo",
-    "es": "",
-    "pt": "",
+    "es": "Tipo",
+    "pt": "Tipo",
     "el": "Τύπος"
   },
   "tableHeaderSource": {
@@ -51,8 +51,8 @@ const widgetLocale = {
     "fr": "Source",
     "de": "Quelle",
     "it": "Provenienza",
-    "es": "",
-    "pt": "",
+    "es": "Fuente",
+    "pt": "Fonte",
     "el": "Πηγή"
   },
   "viewDetails": {
@@ -60,8 +60,8 @@ const widgetLocale = {
     "fr": "Voir détails",
     "de": "Details anzeigen",
     "it": "Vedi",
-    "es": "",
-    "pt": "",
+    "es": "Ver detalles",
+    "pt": "Ver detalhes",
     "el": "Προβολή λεπτομερειών"
   },
   "hideDetails": {
@@ -69,8 +69,8 @@ const widgetLocale = {
     "fr": "Masquer détails",
     "de": "Details ausblenden",
     "it": "Nascondi",
-    "es": "",
-    "pt": "",
+    "es": "Ocultar detalles",
+    "pt": "Ocultar detalhes",
     "el": "Απόκρυψη λεπτομερειών"
   },
   "hoverLinkMeasureDefinition": {
@@ -78,8 +78,8 @@ const widgetLocale = {
     "fr": "Cliquez pour voir la définition",
     "de": "Klicken Sie hier, um die Definition zu sehen",
     "it": "Clicca per vedere la definizione",
-    "es": "",
-    "pt": "",
+    "es": "Haga clic para ver la definición",
+    "pt": "Clique para ver a definição",
     "el": "Κάντε κλικ για να δείτε τον ορισμό"
   }
 };

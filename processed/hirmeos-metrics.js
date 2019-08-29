@@ -16,8 +16,8 @@ var widgetLocale = {
     "fr": "Statistiques",
     "de": "Statistiken",
     "it": "Statistiche",
-    "es": "",
-    "pt": "",
+    "es": "Estadística",
+    "pt": "Estatístico",
     "el": "Στατιστικά"
   },
   "detailsLink": {
@@ -25,8 +25,8 @@ var widgetLocale = {
     "fr": "indicateurs disponibles",
     "de": "Metriken vorhanden",
     "it": "misure disponibili",
-    "es": "",
-    "pt": "",
+    "es": "medidas disponibles",
+    "pt": "indicadores disponíveis",
     "el": "Τύποι στατιστικών διαθέσιμοι"
   },
   "dataType": {
@@ -34,8 +34,8 @@ var widgetLocale = {
     "fr": "Indicateurs",
     "de": "Metriken",
     "it": "Misure",
-    "es": "",
-    "pt": "",
+    "es": "Medidas",
+    "pt": "Indicadores",
     "el": "Τύποι στατιστικών"
   },
   "tableHeaderNumber": {
@@ -43,8 +43,8 @@ var widgetLocale = {
     "fr": "Nombre",
     "de": "Wert",
     "it": "Quantità",
-    "es": "",
-    "pt": "",
+    "es": "Valor",
+    "pt": "Número",
     "el": "Τιμή"
   },
   "tableHeaderType": {
@@ -52,8 +52,8 @@ var widgetLocale = {
     "fr": "Type",
     "de": "Typ",
     "it": "Tipo",
-    "es": "",
-    "pt": "",
+    "es": "Tipo",
+    "pt": "Tipo",
     "el": "Τύπος"
   },
   "tableHeaderSource": {
@@ -61,8 +61,8 @@ var widgetLocale = {
     "fr": "Source",
     "de": "Quelle",
     "it": "Provenienza",
-    "es": "",
-    "pt": "",
+    "es": "Fuente",
+    "pt": "Fonte",
     "el": "Πηγή"
   },
   "viewDetails": {
@@ -70,8 +70,8 @@ var widgetLocale = {
     "fr": "Voir détails",
     "de": "Details anzeigen",
     "it": "Vedi",
-    "es": "",
-    "pt": "",
+    "es": "Ver detalles",
+    "pt": "Ver detalhes",
     "el": "Προβολή λεπτομερειών"
   },
   "hideDetails": {
@@ -79,8 +79,8 @@ var widgetLocale = {
     "fr": "Masquer détails",
     "de": "Details ausblenden",
     "it": "Nascondi",
-    "es": "",
-    "pt": "",
+    "es": "Ocultar detalles",
+    "pt": "Ocultar detalhes",
     "el": "Απόκρυψη λεπτομερειών"
   },
   "hoverLinkMeasureDefinition": {
@@ -88,8 +88,8 @@ var widgetLocale = {
     "fr": "Cliquez pour voir la définition",
     "de": "Klicken Sie hier, um die Definition zu sehen",
     "it": "Clicca per vedere la definizione",
-    "es": "",
-    "pt": "",
+    "es": "Haga clic para ver la definición",
+    "pt": "Clique para ver a definição",
     "el": "Κάντε κλικ για να δείτε τον ορισμό"
   }
 };
@@ -227,27 +227,18 @@ var WidgetMain = function (_React$Component2) {
           { className: "metrics-pre-expand" },
           React.createElement(
             "div",
-            { className: "metrics-count-container" },
-            React.createElement(
-              "button",
-              { className: "metrics-widget-btn", onClick: function onClick() {
-                  return _this3.handleClick();
-                } },
-              this.props.totalMetrics
-            ),
-            React.createElement(
-              "p",
-              { className: "button-measure-text" },
-              getLocale("detailsLink")
-            )
-          ),
-          React.createElement(
-            "div",
             { className: "metrics-details-container" },
             React.createElement(
               "h3",
               { className: "metrics-title" },
               typeof widgetTitle === "undefined" ? getLocale("widgetTitle") : widgetTitle
+            ),
+            React.createElement(
+              "p",
+              { className: "button-measure-text" },
+              this.props.totalMetrics,
+              " ",
+              getLocale("detailsLink")
             ),
             React.createElement(
               "button",
@@ -430,6 +421,8 @@ var App = function (_React$Component4) {
 
   return App;
 }(React.Component);
+
+var widget_condensed = setDefault(widget_params.widgetCondensed, true);
 
 var base_url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press"));
 
