@@ -6,8 +6,8 @@ const widgetLocale = {
     "fr": "Statistiques",
     "de": "Statistiken",
     "it": "Statistiche",
-    "es": "Estadística",
-    "pt": "Estatístico",
+    "es": "Estadísticas",
+    "pt": "Estatísticos",
     "el": "Στατιστικά"
   },
   "detailsLink": {
@@ -57,7 +57,7 @@ const widgetLocale = {
   },
   "viewDetails": {
     "en": "Show details",
-    "fr": "Voir détails",
+    "fr": " Voir les détails",
     "de": "Details anzeigen",
     "it": "Vedi",
     "es": "Ver detalles",
@@ -66,7 +66,7 @@ const widgetLocale = {
   },
   "hideDetails": {
     "en": "Hide details",
-    "fr": "Masquer détails",
+    "fr": "Masquer les détails",
     "de": "Details ausblenden",
     "it": "Nascondi",
     "es": "Ocultar detalles",
@@ -84,6 +84,15 @@ const widgetLocale = {
   }
 };
 
+
+function setTitleCase(text_string) {
+  // Will only convert the first letter of each word to upper case. Will not
+  // convert acronyms to title case
+  let text_list = text_string.split(" ");
+  return text_list.map(
+    x => x[0].toUpperCase() + x.slice(1,)
+  ).join(" ")
+}
 
 function setDefault(variable, default_value) {
   // check if variable is defined, otherwise return default value
@@ -124,7 +133,7 @@ function setMeasuresDict(dataArr) {
   dataArr.forEach(function(measure){
     measureDict[measure.measure_uri] = {
       "source": measure.source,
-      "type": measure.type,
+      "type": setTitleCase(measure.type),
     };
   });
 
@@ -208,14 +217,6 @@ class WidgetMain extends React.Component {
     return (
       <div className="hirmeos-widget">
         <div className="metrics-pre-expand">
-          <div className="metrics-count-container">
-            <button className="metrics-widget-btn" onClick={() => this.handleClick()}>
-              { this.props.totalMetrics }
-            </button>
-            <p className="button-measure-text">
-              { getLocale("detailsLink") }
-            </p>
-          </div>
           <div className="metrics-details-container">
             <h3 className="metrics-title">
               { typeof widgetTitle === "undefined" ? getLocale("widgetTitle"): widgetTitle}
@@ -223,6 +224,14 @@ class WidgetMain extends React.Component {
             <button className="btn btn-link" onClick={() => this.handleClick()}>
               { this.state.showMetrics ? getLocale("hideDetails") : getLocale("viewDetails") }
             </button>
+          </div>
+          <div className="metrics-count-container">
+            <button className="metrics-widget-btn">
+              { this.props.totalMetrics }
+            </button>
+            <p className="button-measure-text">
+              { getLocale("detailsLink") }
+            </p>
           </div>
         </div>
 
@@ -253,9 +262,19 @@ class WidgetTableRow extends React.Component {
 
   render() {
     return (
-        <tr className="table-row-body" onClick={() => this.handleClick()} title={ getLocale("hoverLinkMeasureDefinition") }>
+        <tr className="table-row-body">
+          <td className="table-column-hirmeos">
+            {measure_data[this.props.values[0]].type}
+            <sup>
+              &nbsp;&nbsp;
+              <span className="badge badge-dark table-row-badge"
+                    onClick={() => this.handleClick()}
+                    title={ getLocale("hoverLinkMeasureDefinition") }>
+                ?
+              </span>
+            </sup>
+          </td>
           <td>{measure_data[this.props.values[0]].source}</td>
-          <td>{measure_data[this.props.values[0]].type}</td>
           <td className="textAlignCenter">{this.props.values[1]}</td>
         </tr>
     )
@@ -294,10 +313,10 @@ class App extends React.Component {
           <thead>
           <tr className="table-row-head">
             <th>
-              { getLocale("tableHeaderSource") }
+              { getLocale("tableHeaderType") }
             </th>
             <th>
-              { getLocale("tableHeaderType") }
+              { getLocale("tableHeaderSource") }
             </th>
             <th className="textAlignCenter">
               { getLocale("tableHeaderNumber") }
@@ -312,15 +331,11 @@ class App extends React.Component {
     );
 
     return (
-      <div className="hirmeos-widget">
-        <div>
-          <WidgetMain
-            innerContent={metricsTable}
-            totalMetrics={metricsCount}
-            showLink={showDetailedMetricsLink}
-          />
-        </div>
-      </div>
+      <WidgetMain
+        innerContent={metricsTable}
+        totalMetrics={metricsCount}
+        showLink={showDetailedMetricsLink}
+      />
     );
   }
 }

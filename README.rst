@@ -7,7 +7,8 @@ Development
 For development purposes, this project consists of three main files.
 
 1) *src/hirmeos-metrics.js* - This contains javascript for a React-like
-   app, which manages the logic for the widget.
+   app, which manages the logic for the widget. But you will need to use
+   *processed/hirmeos-metrics.js* (see note below).
 
 2) *src/hirmeos-metrics.css* - This contains styling for the widget.
 
@@ -23,6 +24,25 @@ these, simply open file *(3)* in a browser, e.g.
 
 Note: the ``baseUrl`` variable has been set to use a local version of the \
 metrics-api. Comment this out to query the live API.
+
+Note: This will no longer work on modern browsers. As a security precaution,
+JS files in the same directory ort subdirectories as a locally-loaded html
+file will be blocked. (Due to
+https://www.mozilla.org/en-US/security/advisories/mfsa2019-21/#CVE-2019-11730
+). As a result, the *src/index.html* uses the js file in the *processed*
+directory. For now, please run step (1) of  **Moving to production** when
+developing.
+
+
+Bumpverion
+----------
+
+A bumpverion config file has been added to this project, starting from release
+0.1.2. This is simply to keep track of the code that has been uploaded to our
+CDN (Refer to **Production-ready implementation**). With each new official
+release of the Widget, we produce a min.js file and .css file with a version
+embedded into the file name. The bumpversion tag created will correspond to this
+version. 
 
 
 Moving to production

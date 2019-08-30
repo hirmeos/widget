@@ -16,8 +16,8 @@ var widgetLocale = {
     "fr": "Statistiques",
     "de": "Statistiken",
     "it": "Statistiche",
-    "es": "Estadística",
-    "pt": "Estatístico",
+    "es": "Estadísticas",
+    "pt": "Estatísticos",
     "el": "Στατιστικά"
   },
   "detailsLink": {
@@ -67,7 +67,7 @@ var widgetLocale = {
   },
   "viewDetails": {
     "en": "Show details",
-    "fr": "Voir détails",
+    "fr": " Voir les détails",
     "de": "Details anzeigen",
     "it": "Vedi",
     "es": "Ver detalles",
@@ -76,7 +76,7 @@ var widgetLocale = {
   },
   "hideDetails": {
     "en": "Hide details",
-    "fr": "Masquer détails",
+    "fr": "Masquer les détails",
     "de": "Details ausblenden",
     "it": "Nascondi",
     "es": "Ocultar detalles",
@@ -93,6 +93,15 @@ var widgetLocale = {
     "el": "Κάντε κλικ για να δείτε τον ορισμό"
   }
 };
+
+function setTitleCase(text_string) {
+  // Will only convert the first letter of each word to upper case. Will not
+  // convert acronyms to title case
+  var text_list = text_string.split(" ");
+  return text_list.map(function (x) {
+    return x[0].toUpperCase() + x.slice(1);
+  }).join(" ");
+}
 
 function setDefault(variable, default_value) {
   // check if variable is defined, otherwise return default value
@@ -126,7 +135,7 @@ function setMeasuresDict(dataArr) {
   dataArr.forEach(function (measure) {
     measureDict[measure.measure_uri] = {
       "source": measure.source,
-      "type": measure.type
+      "type": setTitleCase(measure.type)
     };
   });
 
@@ -234,18 +243,25 @@ var WidgetMain = function (_React$Component2) {
               typeof widgetTitle === "undefined" ? getLocale("widgetTitle") : widgetTitle
             ),
             React.createElement(
-              "p",
-              { className: "button-measure-text" },
-              this.props.totalMetrics,
-              " ",
-              getLocale("detailsLink")
-            ),
-            React.createElement(
               "button",
               { className: "btn btn-link", onClick: function onClick() {
                   return _this3.handleClick();
                 } },
               this.state.showMetrics ? getLocale("hideDetails") : getLocale("viewDetails")
+            )
+          ),
+          React.createElement(
+            "div",
+            { className: "metrics-count-container" },
+            React.createElement(
+              "button",
+              { className: "metrics-widget-btn" },
+              this.props.totalMetrics
+            ),
+            React.createElement(
+              "p",
+              { className: "button-measure-text" },
+              getLocale("detailsLink")
             )
           )
         ),
@@ -282,18 +298,30 @@ var WidgetTableRow = function (_React$Component3) {
 
       return React.createElement(
         "tr",
-        { className: "table-row-body", onClick: function onClick() {
-            return _this5.handleClick();
-          }, title: getLocale("hoverLinkMeasureDefinition") },
+        { className: "table-row-body" },
         React.createElement(
           "td",
-          null,
-          measure_data[this.props.values[0]].source
+          { className: "table-column-hirmeos" },
+          measure_data[this.props.values[0]].type,
+          React.createElement(
+            "sup",
+            null,
+            "\xA0\xA0",
+            React.createElement(
+              "span",
+              { className: "badge badge-dark table-row-badge",
+                onClick: function onClick() {
+                  return _this5.handleClick();
+                },
+                title: getLocale("hoverLinkMeasureDefinition") },
+              "?"
+            )
+          )
         ),
         React.createElement(
           "td",
           null,
-          measure_data[this.props.values[0]].type
+          measure_data[this.props.values[0]].source
         ),
         React.createElement(
           "td",
@@ -381,12 +409,12 @@ var App = function (_React$Component4) {
               React.createElement(
                 "th",
                 null,
-                getLocale("tableHeaderSource")
+                getLocale("tableHeaderType")
               ),
               React.createElement(
                 "th",
                 null,
-                getLocale("tableHeaderType")
+                getLocale("tableHeaderSource")
               ),
               React.createElement(
                 "th",
@@ -403,26 +431,16 @@ var App = function (_React$Component4) {
         )
       );
 
-      return React.createElement(
-        "div",
-        { className: "hirmeos-widget" },
-        React.createElement(
-          "div",
-          null,
-          React.createElement(WidgetMain, {
-            innerContent: metricsTable,
-            totalMetrics: metricsCount,
-            showLink: showDetailedMetricsLink
-          })
-        )
-      );
+      return React.createElement(WidgetMain, {
+        innerContent: metricsTable,
+        totalMetrics: metricsCount,
+        showLink: showDetailedMetricsLink
+      });
     }
   }]);
 
   return App;
 }(React.Component);
-
-var widget_condensed = setDefault(widget_params.widgetCondensed, true);
 
 var base_url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press"));
 
