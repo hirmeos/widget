@@ -116,7 +116,14 @@ accordingly.
 
     $ firefox src/index-from-cdn.html
 
+For my own benefit, I have created a `metrics-widget` folder, containing the js
+and css files for a specific version, to be uploaded to our CDN.
 
+To create these files, e.g. for version 0.2.0 of the widget, use
+
+  .. code-block:: bash
+
+    $ python package.py 0.2.0
 
 Widget customisation
 --------------------
@@ -131,7 +138,7 @@ Currently these include:
       in (default is 'en').
 
     - ``baseUrl``: Base URL for querying metrics. Can be set if you have a local
-      instance of the metrics API (defaults to "https://metrics.ubiquity.press").
+      instance of the metrics API (defaults to "https://metrics-api.operas-eu.org").
 
     - ``WidgetTitle``: The title that appears on the widget
       (default is 'Metrics').

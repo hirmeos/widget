@@ -344,7 +344,7 @@ class App extends React.Component {
 let base_url = new URL(
   setDefault(
     widget_params.baseUrl,
-    "https://metrics.ubiquity.press"
+    "https://metrics-api.operas-eu.org"
   )
 );
 

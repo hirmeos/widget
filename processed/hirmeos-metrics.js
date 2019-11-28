@@ -442,7 +442,7 @@ var App = function (_React$Component4) {
   return App;
 }(React.Component);
 
-var base_url = new URL(setDefault(widget_params.baseUrl, "https://metrics.ubiquity.press"));
+var base_url = new URL(setDefault(widget_params.baseUrl, "https://metrics-api.operas-eu.org"));
 
 var url = new URL(base_url + "events");
 var measureUrl = new URL(base_url + "measures");
