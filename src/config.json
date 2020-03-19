@@ -2,10 +2,10 @@
   "baseUrl": "https://metrics-api.operas-eu.org",
   "uri": "",
   "locale": "en",
-  "widgetTitle": "",
+  "widgetTitle": "Metrics",
   "showDetailedMetricsLink": false,
   "detailedMetricsLink": "",
-  "detailedMetricsText": "",
+  "detailedMetricsText": "Show detailed metrics",
   "styling": {
     "widgetBorder": "true",
     "widgetBorderWidth": "2px",
