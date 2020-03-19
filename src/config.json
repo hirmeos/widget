@@ -1,0 +1,25 @@
+{
+  "baseUrl": "https://metrics-api.operas-eu.org",
+  "uri": "",
+  "locale": "en",
+  "widgetTitle": "",
+  "showDetailedMetricsLink": false,
+  "detailedMetricsLink": "",
+  "detailedMetricsText": "",
+  "styling": {
+    "widgetBorder": "true",
+    "widgetBorderWidth": "2px",
+    "widgetBorderColor": "grey",
+    "headerBackgroundColor": "#ffffff",
+    "headerTextColor": "#212529",
+    "headerButtonBackgroundColor": "transparent",
+    "headerButtonTextColor": "#007bff",
+    "tableBackgroundColor": "#ffffff",
+    "tableTextColor": "#212529",
+    "metricsCountBorderColor": "#212529",
+    "infomarkBackgroundColor": "#343a40",
+    "infomarkTextColor": "#ffffff",
+    "detailButtonBackgroundColor": "#343a40",
+    "detailButtonTextColor": "#ffffff"
+  }
+}
