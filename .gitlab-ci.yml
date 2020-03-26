@@ -15,7 +15,7 @@ version:
 scripts:
   stage: k8s-scripts
   before_script:
-    - apt-get update
+    - apk update && apk -U upgrade
     - pip3 install --upgrade google-cloud-storage
     - pip3 install --upgrade google-auth
     - npm install -g npm
