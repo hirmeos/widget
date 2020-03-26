@@ -1,0 +1,83 @@
+{
+  "widgetTitle": {
+    "en": "Metrics",
+    "fr": "Statistiques",
+    "de": "Statistiken",
+    "it": "Statistiche",
+    "es": "Estadísticas",
+    "pt": "Estatísticos",
+    "el": "Στατιστικά"
+  },
+  "detailsLink": {
+    "en": "measures available",
+    "fr": "indicateurs disponibles",
+    "de": "Metriken vorhanden",
+    "it": "misure disponibili",
+    "es": "medidas disponibles",
+    "pt": "indicadores disponíveis",
+    "el": "Τύποι στατιστικών διαθέσιμοι"
+  },
+  "dataType": {
+    "en": "Measures",
+    "fr": "Indicateurs",
+    "de": "Metriken",
+    "it": "Misure",
+    "es": "Medidas",
+    "pt": "Indicadores",
+    "el": "Τύποι στατιστικών"
+  },
+  "tableHeaderNumber": {
+    "en": "Value",
+    "fr": "Nombre",
+    "de": "Wert",
+    "it": "Quantità",
+    "es": "Valor",
+    "pt": "Número",
+    "el": "Τιμή"
+  },
+  "tableHeaderType": {
+    "en": "Type",
+    "fr": "Type",
+    "de": "Typ",
+    "it": "Tipo",
+    "es": "Tipo",
+    "pt": "Tipo",
+    "el": "Τύπος"
+  },
+  "tableHeaderSource": {
+    "en": "Source",
+    "fr": "Source",
+    "de": "Quelle",
+    "it": "Provenienza",
+    "es": "Fuente",
+    "pt": "Fonte",
+    "el": "Πηγή"
+  },
+  "viewDetails": {
+    "en": "Show details",
+    "fr": " Voir les détails",
+    "de": "Details anzeigen",
+    "it": "Vedi",
+    "es": "Ver detalles",
+    "pt": "Ver detalhes",
+    "el": "Προβολή λεπτομερειών"
+  },
+  "hideDetails": {
+    "en": "Hide details",
+    "fr": "Masquer les détails",
+    "de": "Details ausblenden",
+    "it": "Nascondi",
+    "es": "Ocultar detalles",
+    "pt": "Ocultar detalhes",
+    "el": "Απόκρυψη λεπτομερειών"
+  },
+  "hoverLinkMeasureDefinition": {
+    "en": "Click to see definition",
+    "fr": "Cliquez pour voir la définition",
+    "de": "Klicken Sie hier, um die Definition zu sehen",
+    "it": "Clicca per vedere la definizione",
+    "es": "Haga clic para ver la definición",
+    "pt": "Clique para ver a definição",
+    "el": "Κάντε κλικ για να δείτε τον ορισμό"
+  }
+}

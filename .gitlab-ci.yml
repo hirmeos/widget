@@ -1,0 +1,32 @@
+image: us.gcr.io/tools-203611/gitlab-base:32
+
+stages:
+  - version
+  - k8s-scripts
+
+version:
+  stage: version
+  script:
+    - echo "export VERSION=$(git describe --tags --abbrev=0)" > $CI_PROJECT_DIR/variables
+  artifacts:
+    paths:
+    - variables
+
+scripts:
+  stage: k8s-scripts
+    - apt-get update
+    - pip3 install --upgrade google-cloud-storage
+    - pip3 install --upgrade google-auth
+    - npm install -g npm
+    - npm install
+    - npm run build
+    - source $CI_PROJECT_DIR/variables
+  script:
+    - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/ubiquitypress/kubernetes --depth 1 kubernetes
+    - python3 kubernetes/ci/gke_storage.py
+      --bucket_name=operas
+      --source_file_name=dist/widget.js
+      --destination_object_name=metrics-widget/hirmeos-metrics-${VERSION}.min.js
+  only:
+    - tags
+
