@@ -18,6 +18,7 @@ scripts:
     - apk update && apk -U upgrade
     - pip3 install --upgrade google-cloud-storage
     - pip3 install --upgrade google-auth
+    - apk add --update npm
     - npm install -g npm
     - npm install
     - npm run build
