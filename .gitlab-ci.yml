@@ -1,4 +1,4 @@
-image: us.gcr.io/tools-203611/gitlab-base:32
+image: us.gcr.io/tools-203611/gitlab-base:34
 
 stages:
   - version
@@ -11,14 +11,12 @@ version:
   artifacts:
     paths:
     - variables
+  only:
+    - tags
 
 scripts:
   stage: k8s-scripts
   before_script:
-    - apk update && apk -U upgrade
-    - pip3 install --upgrade google-cloud-storage
-    - pip3 install --upgrade google-auth
-    - apk add --update npm
     - npm install -g npm
     - npm install
     - npm run build
@@ -31,4 +29,3 @@ scripts:
       --destination_object_name=metrics-widget/hirmeos-metrics-${VERSION}.min.js
   only:
     - tags
-
